@@ -22,7 +22,7 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
     fasta_path = os.path.join(APP_ROOT, 'static', 'data', 'AT9.fa')
     genome = Fasta(fasta_path)
 
-    result = {}
+    result = []
     str_results = []
     for poly_name, poly_info in db[input_stock_num].items():
         print('Making primers for ' + poly_name + '\n')
@@ -42,8 +42,7 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
             round(primer_results['PRIMER_RIGHT_0_TM'], 1)))
         pretty_seq = split_input(sequence, 120)
 
-        print(len(sequence))
-        result[poly_name] = {'name': poly_name,
+        result.append({'name': poly_name,
                              'Sequence': pretty_seq,
                              'Primers':
                             {'LP':
@@ -54,7 +53,7 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
                                 {'Sequence':primer_results['PRIMER_RIGHT_0_SEQUENCE'],
                                 'Tm':round(primer_results['PRIMER_RIGHT_0_TM'], 1)
                                 }
-                             }}
+                             }})
 
         str_results.append(LP_out)
         str_results.append(RP_out)
@@ -166,11 +165,11 @@ def get_seq(poly_entry, sequence_length_defs, genome):
         new_end = max(min(int(poly_entry['start']) + bp_downstream + 1, len(genome[chrom])), total_bp + new_start)
         seq = genome[chrom][new_start:new_end]
     elif poly_entry['orientation'] == 'C':
-        print("reverse")
+        #print("reverse")
         new_start = max(int(poly_entry['end']) - bp_downstream, 1)
         new_end = max(min(int(poly_entry['end']) + bp_upstream, len(genome[chrom])), new_start + total_bp)
-        print(chrom,new_start,new_end)
-        print(new_start-new_end)
+        #print(chrom,new_start,new_end)
+        #print(new_start-new_end)
         seq = -genome[chrom][new_start:new_end]
     else:
         raise ValueError("Orientation must be 'W' or 'C'!")
