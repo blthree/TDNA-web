@@ -31,7 +31,7 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
             print('Genomic sequence around insert:\n')
             print(sequence)
             print('\n')
-        result['poly_name'] = poly_name
+
         conf_path = os.path.join(APP_ROOT, 'static', 'primer3.conf')
         p3s, p3p = load_conf(conf_path)
         primer_results = make_primers(sequence, sequence_length_defs, p3s, p3p)
@@ -40,12 +40,34 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
             round(primer_results['PRIMER_LEFT_0_TM'], 1))
         RP_out = ('RP: ' + primer_results['PRIMER_RIGHT_0_SEQUENCE'] + ' Tm: ' + str(
             round(primer_results['PRIMER_RIGHT_0_TM'], 1)))
+        pretty_seq = split_input(sequence, 120)
+
+        print(len(sequence))
+        result[poly_name] = {'name': poly_name,
+                             'Sequence': pretty_seq,
+                             'Primers':
+                            {'LP':
+                                {'Sequence':primer_results['PRIMER_LEFT_0_SEQUENCE'],
+                                'Tm':round(primer_results['PRIMER_LEFT_0_TM'], 1)
+                                },
+                            'RP':
+                                {'Sequence':primer_results['PRIMER_RIGHT_0_SEQUENCE'],
+                                'Tm':round(primer_results['PRIMER_RIGHT_0_TM'], 1)
+                                }
+                             }}
+
         str_results.append(LP_out)
         str_results.append(RP_out)
-    for r in str_results:
-        print(r)
-    return str_results
 
+    return result
+def split_input(string, chunk_size):
+    num_chunks = len(string)//chunk_size
+    if (len(string) % chunk_size != 0):
+        num_chunks += 1
+    output = []
+    for i in range(0, num_chunks):
+        output.append(string[chunk_size*i:chunk_size*(i+1)]+'\n')
+    return output
 
 def is_int(s):
     try:
@@ -147,6 +169,8 @@ def get_seq(poly_entry, sequence_length_defs, genome):
         print("reverse")
         new_start = max(int(poly_entry['end']) - bp_downstream, 1)
         new_end = max(min(int(poly_entry['end']) + bp_upstream, len(genome[chrom])), new_start + total_bp)
+        print(chrom,new_start,new_end)
+        print(new_start-new_end)
         seq = -genome[chrom][new_start:new_end]
     else:
         raise ValueError("Orientation must be 'W' or 'C'!")

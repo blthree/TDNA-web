@@ -10,7 +10,8 @@ def hello_world():
         stock_num = request.form['stock-num']
 
         a = run_tdna_primers(stock_num)
-        return '\n'.join(a)
+        print(a)
+        return render_template('results.html', stock_num=stock_num, results=a)
     else:
         return render_template('main.html')
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Primer Results</title>
+</head>
+<body>
+<h1>Primer design results for: {{ stock_num }}</h1>
+{% for poly in results.items() %}
+    {% for name in poly %}
+            {{ name }}
+{% endfor %}
+{% endfor %}
+
+
+</body>
+</html>
