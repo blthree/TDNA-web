@@ -6,7 +6,12 @@
 </head>
 <body>
 <h1>Primer design results for: {{ stock_num }}</h1>
-{{ results }}
+
+<p>Polymorphism: {{ results[0] }}</p>
+<p>LP: {{ results[1] }}  Tm: {{ results[3][0] }}</p>
+<p>RP: {{ results[2] }}  Tm: {{ results[3][1] }}</p>
+<h3>Sequence:</h3>
+<p> {{ results[4]|wordwrap(100) }}</p>
 
 
 </body>
