@@ -4,7 +4,9 @@ class primer_results(object):
         self.LP = LP
         self.RP = RP
         self.sequence = sequence
+        self.lines = [poly_name, LP, RP, sequence]
     def pretty_print(self):
         s = self.name + '\n' + self.LP + '\n' + self.RP + '\n' + 'Sequence' + '\n'.join(self.sequence)
         return s
+
 

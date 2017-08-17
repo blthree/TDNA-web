@@ -6,7 +6,13 @@
 </head>
 <body>
 <h1>Primer design results for: {{ stock_num }}</h1>
-{{ results }}
+{% for l in results %}
+        <p>{{ l|wordwrap(100) }}</p>
+{% endfor %}
+
+
+
+
 
 
 </body>

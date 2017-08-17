@@ -12,8 +12,7 @@ def hello_world():
 
         a = run_tdna_primers(stock_num)
         b = primer_results(a[0]['name'],a[0]['Primers']['LP']['Sequence'], a[0]['Primers']['RP']['Sequence'], a[0]['Sequence'])
-        print(b.pretty_print())
-        return render_template('results.html', stock_num=stock_num, results=b.pretty_print())
+        return render_template('results.html', stock_num=stock_num, results=b.lines, p_name=b.name)
     else:
         return render_template('main.html')
 

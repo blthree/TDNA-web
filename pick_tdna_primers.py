@@ -40,10 +40,10 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
             round(primer_results['PRIMER_LEFT_0_TM'], 1))
         RP_out = ('RP: ' + primer_results['PRIMER_RIGHT_0_SEQUENCE'] + ' Tm: ' + str(
             round(primer_results['PRIMER_RIGHT_0_TM'], 1)))
-        pretty_seq = split_input(sequence, 120)
+        #pretty_seq = split_input(sequence, 120)
 
         result.append({'name': poly_name,
-                             'Sequence': pretty_seq,
+                             'Sequence': sequence,
                              'Primers':
                             {'LP':
                                 {'Sequence':primer_results['PRIMER_LEFT_0_SEQUENCE'],
