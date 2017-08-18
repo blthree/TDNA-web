@@ -1,6 +1,8 @@
 
 from pyfaidx import Fasta
 import os
+from classes import primer_results as pr
+from classes import primer, primer_pair
 
 #global PATH to app root
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +25,6 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
     genome = Fasta(fasta_path)
 
     result = []
-    str_results = []
     for poly_name, poly_info in db[input_stock_num].items():
         print('Making primers for ' + poly_name + '\n')
         sequence = get_seq(poly_info, sequence_length_defs, genome)
@@ -36,29 +37,16 @@ def run_tdna_primers(input_stock_num, maxn=300, ext5=300, ext3=300, p_zone=200, 
         p3s, p3p = load_conf(conf_path)
         primer_results = make_primers(sequence, sequence_length_defs, p3s, p3p)
         # need to label results. Need to use a dict for results
-        LP_out = 'LP: ' + primer_results['PRIMER_LEFT_0_SEQUENCE'] + ' Tm: ' + str(
-            round(primer_results['PRIMER_LEFT_0_TM'], 1))
-        RP_out = ('RP: ' + primer_results['PRIMER_RIGHT_0_SEQUENCE'] + ' Tm: ' + str(
-            round(primer_results['PRIMER_RIGHT_0_TM'], 1)))
-        #pretty_seq = split_input(sequence, 120)
+        LP_out = primer_results['PRIMER_LEFT_0_SEQUENCE']
+        LP_tm = round(primer_results['PRIMER_LEFT_0_TM'], 1)
+        RP_out = primer_results['PRIMER_RIGHT_0_SEQUENCE']
+        RP_tm = round(primer_results['PRIMER_RIGHT_0_TM'], 1)
+        a = pr(poly_name, primer_pair((primer(LP_out,LP_tm),primer(RP_out, RP_tm))), sequence)
 
-        result.append({'name': poly_name,
-                             'Sequence': sequence,
-                             'Primers':
-                            {'LP':
-                                {'Sequence':primer_results['PRIMER_LEFT_0_SEQUENCE'],
-                                'Tm':round(primer_results['PRIMER_LEFT_0_TM'], 1)
-                                },
-                            'RP':
-                                {'Sequence':primer_results['PRIMER_RIGHT_0_SEQUENCE'],
-                                'Tm':round(primer_results['PRIMER_RIGHT_0_TM'], 1)
-                                }
-                             }})
-
-        str_results.append(LP_out)
-        str_results.append(RP_out)
-
+        result.append(a)
     return result
+
+
 def split_input(string, chunk_size):
     num_chunks = len(string)//chunk_size
     if (len(string) % chunk_size != 0):
