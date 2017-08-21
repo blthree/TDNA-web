@@ -36,4 +36,7 @@ class primer_pair(object):
         s = self.left_primer.__str__() + '\n' + self.right_primer.__str__()
         return s
 
-
+class polymorphism(object):
+    def __init__(self, name):
+        self.name = name
+        # should this have a method to fetch the sequences, or fetch the sequence then load into this object?
