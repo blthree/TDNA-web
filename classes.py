@@ -7,6 +7,10 @@ class primer_results(object):
         self.left_primer = self.primer_pair.left_primer
         self.right_primer = self.primer_pair.right_primer
         # add logic to automatically name primers based on the poly_name
+        if self.left_primer.primer_name == '' and self.right_primer.primer_name == '':
+            basename = self.name.split('.')[0]
+            self.left_primer.primer_name = basename + ' LP'
+            self.right_primer.primer_name = basename + ' RP'
     def __str__(self):
         s = "Primer Results for:" + self.name + '\n'
         s += self.primer_pair.__str__() + '\n'
@@ -21,7 +25,7 @@ class primer(object):
         self.primer_name = primer_name
 
     def __str__(self):
-        s = "Primer: " + self.primer_name + '\t' + self.primer_sequence + '\tTm: ' + str(self.primer_tm)
+        s = self.primer_name + '\t' + self.primer_sequence + '\tTm: ' + str(self.primer_tm)
         return s
 
 

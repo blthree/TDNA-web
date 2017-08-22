@@ -7,9 +7,9 @@
 <body>
 <h1>Primer design results for: {{ stock_num }}</h1>
 {% for r in results %}
-    <h2>Polymorphism: {{ r.name }}</h2>
-    <p>LP {{ r.left_primer }}  </p>
-    <p>RP {{ r.right_primer  }}  </p>
+    <h2><b>Polymorphism: </b>{{ r.name }}</h2>
+    <p><b>Left Primer: </b>{{ r.left_primer }}  </p>
+    <p><b>Right Primer: </b>{{ r.right_primer  }}  </p>
     <h3>Sequence:</h3>
     <p> {{ r.sequence|wordwrap(100) }}</p>
 {% endfor %}
