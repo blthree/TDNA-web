@@ -1,5 +1,6 @@
 from pick_tdna_primers import run_tdna_primers
 import json
+import gzip
 monster = 'At1g01010	chr1:000003760	0.0	W/3760-3913,3996-4276,4486-4605,4706-5095,5174-5326,5439-5630	' \
 'AT1G01010.1 CDS NAC domain containing protein 1 [TAIR10] CDS gene_syn ANAC001, NAC domain containing protein 1, ' \
 'NAC001, T25K16.1, T25K16_1 gene ' \
@@ -32,9 +33,21 @@ def split_line(monster_list):
     print(info)
     return info
 
-f = open("C:\\Users\\lindsey.152\\PycharmProjects\\TDNA-web\\static\\data\\GENE.ANNO.ARAPORTv11-Aug2015", 'r')
-f2 = open("C:\\Users\\lindsey.152\\PycharmProjects\\TDNA-web\\static\\data\\genes-small.txt", 'w+')
-new_list = []
-for l in f.readlines():
-    new_list.append(split_line(l))
-test = json.dump(new_list, f2)
+def save_json_compressed():
+    f = open("C:\\Users\\lindsey.152\\PycharmProjects\\TDNA-web\\static\\data\\GENE.ANNO.ARAPORTv11-Aug2015", 'r')
+    f2 = open("C:\\Users\\lindsey.152\\PycharmProjects\\TDNA-web\\static\\data\\genes-small.txt", 'w+')
+    gf2 = gzip.GzipFile("C:\\Users\\lindsey.152\\PycharmProjects\\TDNA-web\\static\\data\\genes-small.json.gz", 'w')
+    new_list = []
+    for l in f.readlines():
+        new_list.append(split_line(l))
+    json_str = json.dumps(new_list) + '\n'
+    json_bytes = json_str.encode('utf-8')
+    gf2.write(json_bytes)
+
+
+def read_json_compressed():
+    gf2 = gzip.GzipFile("C:\\Users\\lindsey.152\\PycharmProjects\\TDNA-web\\static\\data\\genes-small.json.gz", 'r')
+    json_bytes = gf2.read()
+    json_str = json_bytes.decode('utf-8')
+    data = json.loads(json_str)
+    print(type(data))
