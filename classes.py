@@ -28,8 +28,6 @@ class primer(object):
         s = self.primer_name + '\t' + self.primer_sequence + '\tTm: ' + str(self.primer_tm)
         return s
 
-
-
 class primer_pair(object):
     def __init__(self, primer_tuple, primer_pair_name=''):
         self.left_primer = primer_tuple[0]
@@ -44,3 +42,36 @@ class polymorphism(object):
     def __init__(self, name):
         self.name = name
         # should this have a method to fetch the sequences, or fetch the sequence then load into this object?
+
+class genomic_loc(object):
+    def __init__(self, chrom, start, end, orientation):
+        self.chrom = chrom
+        self.start = start
+        self.end = end
+        self.orientation = orientation
+        if self.orientation == 'C':
+            self.is_reverse = True
+        else:
+            self.is_reverse = False
+
+    def __len__(self):
+        l = self.end - self.start
+        return l
+
+    def extend(self, upstream=0, downstream=0):
+        """
+        Extends the coordinates of locations by a specified number of bp on either end
+        Modifies existing object in-place and returns None
+        :param upstream: int number of bp to extend on the 5' end
+        :param downstream: int number of bp to extend on the 3' end
+        :return: None
+        """
+        if not self.is_reverse:
+            self.start -= upstream
+            self.end += downstream
+        elif self.is_reverse:
+            self.start -= downstream
+            self.end += upstream
+        else:
+            raise AttributeError("orientation not correctly set")
+        return None
