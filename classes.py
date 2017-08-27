@@ -47,11 +47,7 @@ class polymorphism(object):
 
 
 class genomic_loc(object):
-    def __init__(self, name, chrom, start, end, orientation):
-        if not name:
-            self.name = ''
-        else:
-            self.name = name
+    def __init__(self, chrom, start, end, orientation):
         self.chrom = chrom
         self.start = start
         self.end = end
@@ -89,3 +85,4 @@ class gene(genomic_loc):
         for a in kwargs:
             setattr(self, a, kwargs[a])
         # create a new genomic loc object for each exon
+
