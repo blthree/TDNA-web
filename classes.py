@@ -43,8 +43,15 @@ class polymorphism(object):
         self.name = name
         # should this have a method to fetch the sequences, or fetch the sequence then load into this object?
 
+
+
+
 class genomic_loc(object):
-    def __init__(self, chrom, start, end, orientation):
+    def __init__(self, name, chrom, start, end, orientation):
+        if not name:
+            self.name = ''
+        else:
+            self.name = name
         self.chrom = chrom
         self.start = start
         self.end = end
@@ -75,3 +82,9 @@ class genomic_loc(object):
         else:
             raise AttributeError("orientation not correctly set")
         return None
+
+class gene(genomic_loc):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args)
+        for a in kwargs:
+            setattr(self, a, kwargs[a])
