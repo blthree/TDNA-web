@@ -16,7 +16,6 @@ def split_line(monster_list):
     d = [(x, y) for x, y in [z.split('-') for z in c[1].split(',')]]
     end = d[-1][1]
     info = {"name": name, "chrom": chrom, "start": start, "end": end, "orientation": ori, "exons": d}
-    print(info)
     return info
 
 def save_json_compressed():
