@@ -19,6 +19,8 @@ tg2 = gene(**b)
 fasta_path = os.path.join(APP_ROOT, 'static', 'data', 'AT9.fa')
 genome = Fasta(fasta_path)
 tg2.get_sequence(genome)
+print(name,start,end)
+print(tg2.exon_list[0].start)
 
 """
 LOCUS       Example                   24 bp    DNA              UNK 01-JAN-1980
@@ -43,13 +45,16 @@ f = "VERSION     123456789"
 g = "SOURCE      ."
 h = "ORGANISM    Arabidopsis thaliana"
 i = "FEATURES    Location/Qualifiers"
-j = "     misc_feature          4..12"
+j = "     misc_feature          {0}..{1}".format(tg2.start, tg2.end)
+n = "     CDS                   join({0})"
 k = "ORIGIN"
 #l = "        1 ggggaaaatt ttaaaacccc aaaa"
 m = "//"
-
-
-
+print(tg2.exon_list[0].loc_tuple)
+exon_generator = "\n".join(["     exon          {0}..{1}".format(exon.loc_tuple[0], exon.loc_tuple[1]) for exon in tg2.exon_list])
+cds_gen = ",".join(["{0}..{1}".format(exon.loc_tuple[0], exon.loc_tuple[1]) for exon in tg2.exon_list])
+cds = n.format(cds_gen)
+print(cds)
 def split_input(string, chunk_size, end_char=''):
     num_chunks = len(string)//chunk_size
     if (len(string) % chunk_size != 0):
@@ -70,7 +75,7 @@ new_num_seq = [' '*(max_len_num-len(s)) + s for s in num_seq]
 new_seq = [new_num_seq[i] + ' ' + seq[i] for i in range(len(seq))]
 final_seq = '\n'.join(new_seq)
 l = final_seq
-n =[c,d,e,f,g,h,i,j,k,l,m]
+n =[c,d,e,f,g,h,i,cds,exon_generator,k,l,m]
 o = '\n'.join(n)
 print(o)
 f2 = open('genbank_test.gb', 'w')

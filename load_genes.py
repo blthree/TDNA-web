@@ -36,8 +36,8 @@ def read_json_compressed():
     base_path = os.getcwd()
     gf2 = gzip.GzipFile(os.path.join(base_path, "static", "data", "genes-small.json.gz"), 'r')
     json_bytes = gf2.read()
-    print(json_bytes)
+    #print(json_bytes)
     json_str = json_bytes.decode('utf-8')
-    print(json_str)
+    #print(json_str)
     data = json.loads(json_str)
     return data

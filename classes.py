@@ -52,6 +52,7 @@ class genomic_loc(object):
         self.start = int(start)
         self.end = int(end)
         self.orientation = orientation
+        self.loc_tuple = (self.start, self.end)
         if self.orientation == 'C':
             self.is_reverse = True
         else:
@@ -88,7 +89,7 @@ class genomic_loc(object):
                 return False
         else:
             return False
-    def __str__(self):
+    def toString(self):
         s = self.chrom + " " + str(self.start) + " " + str(self.end) + " " + self.orientation
         return s
 
@@ -98,8 +99,9 @@ class gene(genomic_loc):
         for a in kwargs:
             setattr(self, a, kwargs[a])
         super().__init__(self.chrom, self.start, self.end, self.orientation)
-        self.exon_list = self.exons
-        self.exons = [genomic_loc(self.chrom, e[0], e[1], self.orientation) for e in self.exon_list]
+        #self.exon_list = self.exons
+        self.exon_list = [genomic_loc(self.chrom, int(e[0])-self.start, int(e[1])-self.start, self.orientation) for e in self.exons]
+        print()
         self.sequence = ""
     def get_sequence(self, genome):
         seq = genome[self.chrom][self.start:self.end]
