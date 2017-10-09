@@ -46,12 +46,12 @@ g = "SOURCE      ."
 h = "ORGANISM    Arabidopsis thaliana"
 i = "FEATURES    Location/Qualifiers"
 j = "     misc_feature          {0}..{1}".format(tg2.start, tg2.end)
-n = "     CDS                   join({0})"
+n = "     CDS       join({0})"
 k = "ORIGIN"
 #l = "        1 ggggaaaatt ttaaaacccc aaaa"
 m = "//"
 print(tg2.exon_list[0].loc_tuple)
-exon_generator = "\n".join(["     exon          {0}..{1}".format(exon.loc_tuple[0], exon.loc_tuple[1]) for exon in tg2.exon_list])
+exon_generator = "\n".join(["     exon      {0}..{1}".format(exon.loc_tuple[0], exon.loc_tuple[1]) for exon in tg2.exon_list])
 cds_gen = ",".join(["{0}..{1}".format(exon.loc_tuple[0], exon.loc_tuple[1]) for exon in tg2.exon_list])
 cds = n.format(cds_gen)
 print(cds)
